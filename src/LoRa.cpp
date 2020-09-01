@@ -361,7 +361,9 @@ void LoRaClass::onReceive(void(*callback)(int))
     attachInterrupt(digitalPinToInterrupt(_dio0), LoRaClass::onDio0Rise, RISING);
   } else {
     detachInterrupt(digitalPinToInterrupt(_dio0));
-#ifdef SPI_HAS_NOTUSINGINTERRUPT
+#if defined(CORE_TEENSY) &&  defined(SPI_HAS_NOTUSINGINTERRUPT)
+    SPI.notUsingInterrupt((IRQ_NUMBER_t)digitalPinToInterrupt(_dio0));
+#elif defined(SPI_HAS_NOTUSINGINTERRUPT)
     SPI.notUsingInterrupt(digitalPinToInterrupt(_dio0));
 #endif
   }
@@ -379,7 +381,9 @@ void LoRaClass::onTxDone(void(*callback)())
     attachInterrupt(digitalPinToInterrupt(_dio0), LoRaClass::onDio0Rise, RISING);
   } else {
     detachInterrupt(digitalPinToInterrupt(_dio0));
-#ifdef SPI_HAS_NOTUSINGINTERRUPT
+#if defined(CORE_TEENSY) && defined(SPI_HAS_NOTUSINGINTERRUPT)
+    SPI.notUsingInterrupt((IRQ_NUMBER_t)digitalPinToInterrupt(_dio0));
+#elif defined(SPI_HAS_NOTUSINGINTERRUPT)
     SPI.notUsingInterrupt(digitalPinToInterrupt(_dio0));
 #endif
   }
